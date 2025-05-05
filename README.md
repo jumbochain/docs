@@ -1,5 +1,5 @@
-# Jumbochain docs 
+# Jumbochain docs
 
-(website)[https://docs.jumbochain.org]
+[website](https://docs.jumbochain.org)
 
 ## How to submit PR
