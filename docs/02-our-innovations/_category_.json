@@ -1,0 +1,8 @@
+{
+  "label": "Our Innovations",
+  "position": 2,
+  "collapsible": true,
+  "link": {
+    "type": "generated-index"
+  }
+}

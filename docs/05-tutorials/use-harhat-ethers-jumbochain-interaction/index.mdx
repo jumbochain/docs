@@ -1,0 +1,339 @@
+---
+title: Interacting with Smart Contracts on Jumbochain (hardhat & ethers)
+---
+
+This tutorial will guide you through the process of interacting with a
+smart contract on Jumbochain. We'll cover these steps:
+
+1. Setting up your development environment with Hardhat.
+
+2. Creating a simple smart contract.
+
+3. Obtaining testnet tokens from the ProtoJumbo faucet.
+
+4. Deploying the smart contract to the JumboChain testnet.
+
+5. Writing a Node.js script using Ethers.js to interact with the deployed
+contract.
+
+## Prerequisites
+
+- Node.js and npm: Ensure you have Node.js and npm (Node Package Manager) installed.
+You can download them from nodejs.org.
+
+- Basic understanding of Solidity: Familiarity with Solidity, the smart
+contract programming language, is helpful but not required.
+
+## Step 1: Setting up the Development Environment
+
+We'll use Hardhat, a development environment for compiling, deploying, testing,
+and debugging.
+Since JumboChain is EVM-compatible, Hardhat works well.
+
+Create a project directory:
+
+```bash
+mkdir jumbochain-tutorial
+cd jumbochain-tutorial
+```
+
+Initialize a new Node.js project:
+
+```bash
+npm init -y
+```
+
+Install Hardhat:
+
+```bash
+npm install --save-dev hardhat
+```
+
+Install Ethers.js:
+
+```bash
+npm install --save-dev ethers
+```
+
+Install dotenv (for managing environment variables):
+
+```bash
+npm install --save-dev dotenv
+```
+
+Set up Hardhat:
+
+```bash
+npx hardhat
+```
+
+When prompted, select "Create a sample project".
+This will set up a basic Hardhat project structure.
+
+## Step 2: Create a Simple Smart Contract
+
+Let's create a very basic smart contract.
+
+Create a new Solidity file: Inside the contracts directory, create a file named SimpleStorage.sol:
+
+```bash
+touch contracts/SimpleStorage.sol
+```
+
+Add the following code to contracts/SimpleStorage.sol:
+
+```solidity title="contracts/SimpleStorage.sol
+contract SimpleStorage {
+  uint256 storedData;
+  
+  constructor(uint256 initVal) {
+  storedData = initVal;
+  }
+  
+  function set(uint256 x) public {
+  storedData = x;
+  }
+  
+  function get() public view returns (uint256) {
+  return storedData;
+  }
+}
+```
+
+This contract has a constructor that takes an initial value, a `set` function
+to modify the stored data, and a `get` function to retrieve it.
+
+## Step 3: Obtain Testnet Tokens
+
+To deploy and interact with smart contracts on JumboChain, you'll need testnet
+tokens. If you are using protojumbo testnet, request tokens [here](https://protojumbo.jumbochain.org/faucet-smart).
+
+Generally, faucets provide tokens to your wallet address on testnet.
+
+:::warning
+Handle your private keys with extreme care. Never share them publicly.
+:::
+
+:::tip
+Search for "ProtoJumbo faucet" to find the official website or use chainlink.
+
+Follow the instructions on the faucet website to obtain testnet tokens.
+
+This usually involves providing your wallet address.
+:::
+
+## Step 4: Deploy the Smart Contract
+
+Now, let's deploy the SimpleStorage contract to the JumboChain testnet.
+
+1. Configure Hardhat: You need to configure Hardhat to connect to the JumboChain network.  Open hardhat.config.js and modify it as follows:
+
+  ```javascript title="hardhat.config.js
+  const PRIVATE_KEY = process.env.PRIVATE_KEY;
+  const JUMBOCHAIN_RPC_URL = process.env.JUMBOCHAIN_RPC_URL || "http://your-jumbochain-rpc-url:8545";  // Replace with the actual RPC URL
+  
+  module.exports = {
+    solidity: "0.8.17", // Or the version you are using
+    networks: {
+      jumbochain: {
+        url: JUMBOCHAIN_RPC_URL,
+        accounts: [PRIVATE_KEY],
+        chainId: 1992, // Or the Chain ID of JumboChain
+      },
+    },
+  };
+  ```
+
+    - Replace `http://your-jumbochain-rpc-url:8545` with the actual RPC URL for the
+      JumboChain testnet.
+      This is crucial for Hardhat to communicate with the blockchain.
+    
+    - Replace 1992 with the correct Chain ID for JumboChain.
+    
+    - You'll need to set the `PRIVATE_KEY` and `JUMBOCHAIN_RPC_URL` environment variables.
+
+2. Create a .env file
+
+  In your project root directory, create a .env file to store your private key and RPC URL:
+
+  ```bash
+  touch .env
+  ```
+
+3. Add your private key and RPC URL to .env
+
+  ```bash
+  PRIVATE_KEY="YOUR_PRIVATE_KEY"  # Replace with your actual private key
+  JUMBOCHAIN_RPC_URL="http://your-jumbochain-rpc-url:8545"  # Replace with the JumboChain RPC URL
+  ```
+
+  :::warning
+  Never commit your .env file to a public repository, as it contains
+  your private key!  
+  Add `.env` to your `.gitignore` file.
+  :::
+
+4. Create a deployment script: In the scripts directory, create a file named deploy.js:
+
+  ```bash
+  touch scripts/deploy.js
+  ```
+  
+5. Add the following code to scripts/deploy.js:
+
+  ```javascript
+  async function main() {
+    const SimpleStorage = await ethers.getContractFactory("SimpleStorage");
+    const initialValue = 42;  // You can change the initial value here
+    const simpleStorage = await SimpleStorage.deploy(initialValue);
+  
+    await simpleStorage.deployed();
+  
+    console.log("Deployed SimpleStorage to:", simpleStorage.address);
+  
+  }
+  
+  main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+      console.error(error);
+      process.exit(1);
+    });
+  ```
+  
+  This script uses `ethers.getContractFactory` to get the contract object,
+  deploys it with an initial value, and then logs the deployed contract's address.
+
+6. Compile the contract:
+
+  ```bash
+  npx hardhat compile
+  ```
+
+7. the contract:
+  
+  ```bash
+  npx hardhat run scripts/deploy.js --network jumbochain
+  ```
+
+This command runs the deploy.js script on the jumbochain network (which we configured in hardhat.config.js).
+
+You should see the deployed contract address in the console output.
+
+Record this address; We will need it in the next step.
+
+## Step 5: Interact with the Smart Contract using Ethers.js
+
+Now, let's write a Node.js script to interact with the deployed contract using Ethers.js.
+
+Create a new JavaScript file: Create a file named interact.js in your project root directory:
+
+```bash
+touch interact.js
+```
+
+Add the following code to interact.js:
+
+```javascript titile="interact.js"
+// Contract ABI (Application Binary Interface) - from SimpleStorage.json
+const contractABI = [
+  "constructor(uint256)",
+  "function get() public view returns (uint256)",
+  "function set(uint256 x) public",
+];
+
+// Replace with your contract address and RPC URL
+const contractAddress = "YOUR_CONTRACT_ADDRESS"; // Replace with the deployed contract address
+const rpcUrl = process.env.JUMBOCHAIN_RPC_URL || "http://your-jumbochain-rpc-url:8545";
+
+// Private key of the account that will send transactions
+const privateKey = process.env.PRIVATE_KEY;
+
+async function main() {
+  // 1. Connect to the JumboChain network using the RPC URL
+  const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+
+  // 2. Create a wallet instance using your private key
+  const wallet = new ethers.Wallet(privateKey, provider);
+
+  // 3. Create a contract instance
+  const contract = new ethers.Contract(contractAddress, contractABI, wallet);
+
+  console.log("Connected to contract:", contract.address);
+
+  // 4. Call the 'get' function to retrieve the current value
+  console.log("Calling get()...");
+  const currentValue = await contract.get();
+  console.log("Current value:", currentValue.toString());
+
+  // 5. Call the 'set' function to update the value
+  const newValue = 123;
+  console.log("Calling set() with value:", newValue);
+  const tx = await contract.set(newValue);
+  console.log("Transaction hash:", tx.hash);
+
+  // Wait for the transaction to be mined (optional, but recommended)
+  console.log("Waiting for transaction to be mined...");
+  await tx.wait();
+  console.log("Transaction mined!");
+
+  // 6. Call 'get' again to verify the updated value
+  console.log("Calling get() again to verify...");
+  const updatedValue = await contract.get();
+  console.log("Updated value:", updatedValue.toString());
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error("Error:", error);
+    process.exit(1);
+  });
+```
+
+Replace `YOUR_CONTRACT_ADDRESS` with the address of your deployed contract.
+
+Ensure that the rpcUrl matches the JumboChain RPC URL.
+
+The contractABI array defines the functions in your smart contract,
+allowing Ethers.js to interact with it.  
+
+:::tip
+For real-world applications, it's best to import the ABI from a
+JSON file generated by Hardhat (e.g., SimpleStorage.json).
+For this simple example, we've included it directly in the code for clarity.
+
+You can get the ABI from the `artifacts/contracts/SimpleStorage.sol/SimpleStorage.json`
+file after compiling.
+:::
+
+Run the interact.js script:
+
+```bash
+node interact.js
+```
+
+This script will:
+
+- Connect to the JumboChain network.
+
+- Create a wallet using your private key.
+
+- Create a contract instance using the address and ABI.
+
+- Call the `get()` function to get the initial value.
+
+- Call the `set()` function to change the value.
+
+- Call `get()` again to confirm the change.
+
+## Conclusion
+
+You have successfully deployed a smart contract to the Jumbochain testnet and
+interacted with it using Ethers.js!
+
+This tutorial provides a basic framework for building more complex
+decentralized applications on JumboChain.  
+
+Remember to consult the official Jumbochain documentation and Ethers.js
+documentation for more advanced features and best practices.
