@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import HomepageHighlights from '@site/src/components/HomepageHighlights';
 import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
@@ -23,7 +23,7 @@ function HomepageHeader() {
           </Link>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/getting-started">
+            to="https://jumbochain.org/grant">
             Apply for Grant
           </Link>
         </div>
@@ -40,7 +40,7 @@ export default function Home() {
       description="Description will go into a meta tag in <head />">
       <HomepageHeader />
       <main>
-        <HomepageFeatures />
+        <HomepageHighlights />
       </main>
     </Layout>
   );

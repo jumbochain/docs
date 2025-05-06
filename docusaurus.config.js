@@ -10,12 +10,12 @@ import { themes as prismThemes } from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Build on Jumbochain',
-  tagline: 'Get started right now',
+  title: 'Jumbo Blockchain Docs',
+  tagline: 'Cutting-Edge, Fast, Expandable, Cost-Effective, Eco-Friendly Layer 1',
   favicon: 'img/favicon.svg',
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
+  url: 'https:docs.jumbochain.org',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -23,7 +23,7 @@ const config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'jumbochain', // Usually your GitHub org/user name.
-  projectName: 'jumbochain', // Usually your repo name.
+  projectName: 'docs', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -45,8 +45,8 @@ const config = {
           sidebarPath: './sidebars.js',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          // editUrl:
+          //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         blog: {
           showReadingTime: true,
@@ -56,8 +56,8 @@ const config = {
           },
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          // editUrl:
+          //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -90,9 +90,19 @@ const config = {
           },
           // { to: '/blog', label: 'Blog', position: 'left' },
           {
+            href: "https://protojumbo.jumbochain.org",
+            label: "Protojumbo",
+            position: "right",
+          },
+          {
             href: 'https://github.com/jumbochain',
             label: 'GitHub',
             position: 'right',
+          },
+          {
+            href: "mailto:operations@jumbochain.org",
+            label: "Help Us Improve",
+            position: "right",
           },
         ],
       },
@@ -144,6 +154,7 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
+        additionalLanguages: ["solidity", "java", "csharp", "python", "bash", "go", "javascript"]
       },
     }),
 };

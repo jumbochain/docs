@@ -1,0 +1,32 @@
+.highlights {
+  padding: 2rem 0;
+  background-color: var(--ifm-color-secondary-lighter); /* Adjust background color as needed */
+}
+
+.highlightGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.highlight {
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: var(--ifm-color-white);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.highlight h3 {
+  margin-top: 0;
+  color: var(--ifm-color-primary);
+}
+
+.highlight p {
+  color: var(--ifm-color-gray-700);
+}
+
+.buttons {
+  margin-top: 1rem;
+}

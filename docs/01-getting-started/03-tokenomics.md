@@ -34,7 +34,7 @@ Tokenomics refers to the economic structure and incentive mechanisms that govern
 
 ## Token Allocation
 
-![alt text](./img/tokenomics_chart.png)
+![alt text](./img/tokenomics_chart_dark_bg.jpeg)
 
 <table class="customTable ">
   <tbody>

@@ -1,0 +1,8 @@
+{
+  "position": 2,
+  "label": "Beginner Tutorials",
+  "collapsible": true,
+  "link": {
+    "type": "generated-index"
+  }
+}
