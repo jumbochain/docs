@@ -1,0 +1,5 @@
+node_modules
+build
+.docusaurus
+Dockerfile
+docker-compose.yml
