@@ -1,0 +1,8 @@
+{
+  "position": 3,
+  "label": "Developer Essentials",
+  "collapsible": true,
+  "link": {
+    "type": "generated-index"
+  }
+}
