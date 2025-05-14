@@ -9,6 +9,12 @@ wallet.
 
 ## Setup
 
+Create a project directory.
+
+```bash
+mkdir erc-20-on-jumbochain && cd erc-20-on-jumbochain
+```
+
 Initialise you project directory.
 
 ```bash
@@ -27,7 +33,7 @@ Add open `OpenZeppelin` module to your project.
 npm install @openzeppelin/contracts
 ```
 
-We will also need dotenv.
+We will also need dotenv. Install it with following.
 
 ```bash
 npm install dotenv
@@ -88,7 +94,9 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract MyToken is ERC20 {
     constructor() ERC20("JumboToken", "JBT") {
-        _mint(msg.sender, 1000 * 10 ** decimals());
+        _mint(msg.sender, 1000 * 10 ** decimals()); // we can provide these constructor arguments
+// through deploy script as well but we are choosing do provide them here for sake
+// of verbosity
     }
 }
 
